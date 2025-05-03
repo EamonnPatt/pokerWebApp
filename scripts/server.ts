@@ -5,9 +5,9 @@ import { User } from "./models/User.js"; //,js
 
 //DB
 import mongoose from "mongoose";
+import { updateUserView } from "./utils.js";
 
 const MONGO_URI = "mongodb+srv://admin:dbpass@pokercluster1.rgp8gh8.mongodb.net/";
-
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log("[DB] MongoDB connected"))
@@ -16,12 +16,10 @@ mongoose.connect(MONGO_URI)
     process.exit(1);
 });
 
-
 //END DB
 
 export const app = express();
 const port = 4000;
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,11 +34,6 @@ app.use(express.static(path.join(__dirname, "../../")));
 app.use("/dist", express.static(path.join(__dirname, "../dist")));
 // Serve views directory
 app.use("/views", express.static(path.join(__dirname, "../../views")));
-
-// Serve main HTML file
-app.get("/", (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, "../../index.html"));
-});
 
 ///db routes
 

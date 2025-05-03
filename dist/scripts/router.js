@@ -1,3 +1,4 @@
+import { updateUserView } from "./utils.js";
 import { initViewScripts } from "./views.js";
 class Router {
     constructor() {
@@ -13,16 +14,15 @@ class Router {
         // Handle navigation links
         document.addEventListener('click', (e) => {
             const target = e.target;
-            // Skip if the click is on a form or form element
-            if (target.closest('form')) {
-                return;
-            }
             const link = target.closest('[data-view]');
             if (link) {
-                e.preventDefault();
-                const viewName = link.getAttribute('data-view');
-                if (viewName) {
-                    this.loadView(viewName);
+                // Only prevent default if it's not a form submission
+                if (!target.closest('form') || target.tagName === 'A') {
+                    e.preventDefault();
+                    const viewName = link.getAttribute('data-view');
+                    if (viewName) {
+                        this.loadView(viewName);
+                    }
                 }
             }
         });
@@ -45,7 +45,7 @@ class Router {
             // Show loading state
             this.viewContainer.innerHTML = '<div class="loading">Loading...</div>';
             // Fetch the view content - using relative path from the current location
-            const response = await fetch(`../../views/${viewName}.html`);
+            const response = await fetch(`/views/${viewName}.html`);
             if (!response.ok) {
                 throw new Error(`Failed to load view: ${response.status} ${response.statusText}`);
             }
@@ -59,7 +59,7 @@ class Router {
             // Initialize view scripts after the HTML is injected
             initViewScripts(viewName);
             // Update user view state
-            //updateUserView();
+            updateUserView();
             // Reinitialize any scripts in the new view
             this.initializeViewScripts();
             // Update the main content visibility

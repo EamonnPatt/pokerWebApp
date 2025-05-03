@@ -1,4 +1,4 @@
-import { updateUserView } from "./app.js";
+import { updateUserView } from "./utils.js";
 import { initViewScripts } from "./views.js";
 
 interface RouterState {
@@ -23,18 +23,17 @@ class Router {
         // Handle navigation links
         document.addEventListener('click', (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            // Skip if the click is on a form or form element
-            if (target.closest('form')) {
-                return;
-            }
             
             const link = target.closest('[data-view]') as HTMLElement;
             
             if (link) {
-                e.preventDefault();
-                const viewName = link.getAttribute('data-view');
-                if (viewName) {
-                    this.loadView(viewName);
+                // Only prevent default if it's not a form submission
+                if (!target.closest('form') || target.tagName === 'A') {
+                    e.preventDefault();
+                    const viewName = link.getAttribute('data-view');
+                    if (viewName) {
+                        this.loadView(viewName);
+                    }
                 }
             }
         });
@@ -53,7 +52,7 @@ class Router {
     private async loadView(viewName: string): Promise<void> {
         try {
             console.log("Router loadView"); 
-                   
+         
             // Update URL without page reload
             window.history.pushState({ view: viewName } as RouterState, '', `#${viewName}`);
 
@@ -61,7 +60,7 @@ class Router {
             this.viewContainer.innerHTML = '<div class="loading">Loading...</div>';
 
             // Fetch the view content - using relative path from the current location
-            const response = await fetch(`../../views/${viewName}.html`);
+            const response = await fetch(`/views/${viewName}.html`);
             
             if (!response.ok) {
                 throw new Error(`Failed to load view: ${response.status} ${response.statusText}`);
@@ -81,8 +80,9 @@ class Router {
             initViewScripts(viewName);
 
             // Update user view state
-            //updateUserView();
-
+            
+            updateUserView();
+           
             // Reinitialize any scripts in the new view
             this.initializeViewScripts();
 

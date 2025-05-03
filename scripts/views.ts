@@ -1,4 +1,4 @@
-import { updateUserView } from "./app.js";
+import { updateUserView } from "./utils.js";
 
 export function initViewScripts(view: string) {
     console.log("initViewScripts");
@@ -19,9 +19,9 @@ export function initViewScripts(view: string) {
                     console.log("Attempting login...");
                     await handleLogin(username, password);
                     console.log("Login successful");
-                    alert("Login successful!");
-                    //updateUserView();
+                    alert("Login successful!");  
                     location.hash = "#/";
+                    updateUserView();
                 }
                 catch (err) {
                     console.error("Login error:", err);
@@ -111,4 +111,5 @@ async function handleRegister(username: string, email: string, password: string)
         throw new Error('Registration failed');
     }
 } 
+
 

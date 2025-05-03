@@ -1,3 +1,4 @@
+import { updateUserView } from "./utils.js";
 export function initViewScripts(view) {
     console.log("initViewScripts");
     if (view === 'login') {
@@ -15,8 +16,8 @@ export function initViewScripts(view) {
                     await handleLogin(username, password);
                     console.log("Login successful");
                     alert("Login successful!");
-                    //updateUserView();
                     location.hash = "#/";
+                    updateUserView();
                 }
                 catch (err) {
                     console.error("Login error:", err);

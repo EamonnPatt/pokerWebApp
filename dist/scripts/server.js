@@ -25,10 +25,6 @@ app.use(express.static(path.join(__dirname, "../../")));
 app.use("/dist", express.static(path.join(__dirname, "../dist")));
 // Serve views directory
 app.use("/views", express.static(path.join(__dirname, "../../views")));
-// Serve main HTML file
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../../index.html"));
-});
 ///db routes
 app.get("/api/:username", async (req, res) => {
     const { username } = req.params;

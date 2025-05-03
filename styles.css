@@ -10,18 +10,26 @@ body {
     color: #a3db7e;
 }
 
+.page-container {
+    display: flex;
+    min-height: 100vh;
+}
+
 .navbar {
     background-color: #2a2a2a;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    padding: 2rem 0;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
 }
 
 .nav-brand {
@@ -30,6 +38,8 @@ body {
     gap: 0.5rem;
     font-size: 1.5rem;
     font-weight: 600;
+    padding: 0 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .nav-brand i {
@@ -38,25 +48,35 @@ body {
 
 .nav-links {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0 1.5rem;
 }
 
 .nav-link {
-    color: #ffffff;
+    color: #a3db7e;
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
     border-radius: 4px;
     transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
 }
 
 .nav-link:hover {
     background-color: #3a3a3a;
 }
 
+.content-wrapper {
+    margin-left: 250px;
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .main-content {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 2rem;
+    padding: 2rem;
     text-align: center;
 }
 
@@ -174,8 +194,9 @@ body {
 }
 
 #view-container {
+    flex: 1;
+    padding: 2rem;
     position: relative;
-    min-height: 200px;
 }
 
 .loading, .error {
@@ -195,4 +216,47 @@ body {
 .error {
     background-color: #ff4444;
     color: white;
+}
+
+.user-display-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    border-top: 1px solid #3a3a3a;
+}
+
+.user-display {
+    color: #a3db7e;
+    font-size: 0.9rem;
+    text-align: center;
+    display: none;
+}
+
+.user-display.show {
+    display: block;
+}
+
+.logout-link {
+    display: none;
+}
+
+.logout-link button {
+    color: #ff4444;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: inherit;
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.logout-link button:hover {
+    background-color: #3a3a3a;
 } 

@@ -7,32 +7,49 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script type="module" src="/dist/scripts/app.js"></script>
-    <script type="module" src="/dist/scripts/views.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <i class="fas fa-spade"></i>
-                <a href="/" class="nav-link">Poker Palace</a>
+    <div class="page-container">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-spade"></i>
+                    <a href="/" class="nav-link">Poker Palace</a>
+                </div>
+                <div class="nav-links">
+                    <div class="auth-links">
+                        <a href="#login" data-view="login" class="nav-link">Login</a>
+                        <a href="#register" data-view="register" class="nav-link">Register</a>
+                    </div>
+                    <div class="logout-link">
+                        <button id="logoutBtn" class="nav-link">Logout</button>
+                    </div>
+                </div>
+                <div class="user-display-container">
+                    <div class="user-display"></div>
+                </div>
             </div>
-            <div class="nav-links">
-                <a href="#login" data-view="login" class="nav-link">Login</a>
-                <a href="#register" data-view="register" class="nav-link">Register</a>
+        </nav>
+        <div class="content-wrapper">
+            <div class="main-content">
+                <h1>Welcome to Poker Palace</h1>
+                <p>Join the ultimate poker experience</p>
             </div>
+            <div id="view-container"></div>
         </div>
-    </nav>
-    <div class="main-content">
-        <h1>Welcome to Poker Palace</h1>
-        <p>Join the ultimate poker experience</p>
     </div>
-    <div id="view-container"></div>
 
+    <!-- Load scripts in correct order -->
+    <script type="module" src="/dist/scripts/utils.js"></script>
+    <script type="module" src="/dist/scripts/app.js"></script>
+    <script type="module" src="/dist/scripts/views.js"></script>
+    <script type="module" src="/dist/scripts/auth.js"></script>
     <script type="module">
         import { router } from './dist/scripts/router.js';
         window.router = router;
+        
+        
+       
     </script>
-    <script type="module" src="/dist/scripts/auth.js"></script>
 </body>
 </html>
