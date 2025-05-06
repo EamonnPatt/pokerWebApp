@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poker Palace</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/views/styles/styles.css">
+    <link rel="stylesheet" href="/views/styles/games.css">
+    <link rel="stylesheet" href="/views/styles/profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -17,6 +19,13 @@
                     <a href="/" class="nav-link">Poker Palace</a>
                 </div>
                 <div class="nav-links">
+                    <div class="default-links">
+                        <a href="#home" data-view="Home" class="nav-link">Home</a>
+                        <a href="#games" data-view="Games" class="nav-link">Games</a>                     
+                    </div>
+                    <div class="profile-links">
+                        <a href="#profile" data-view="Profile" class="nav-link">Profile</a>
+                    </div>
                     <div class="auth-links">
                         <a href="#login" data-view="login" class="nav-link">Login</a>
                         <a href="#register" data-view="register" class="nav-link">Register</a>
@@ -44,6 +53,8 @@
     <script type="module" src="/dist/scripts/app.js"></script>
     <script type="module" src="/dist/scripts/views.js"></script>
     <script type="module" src="/dist/scripts/auth.js"></script>
+    <script type="module" src="/dist/scripts/profile.js"></script>
+
     <script type="module">
         import { router } from './dist/scripts/router.js';
         window.router = router;

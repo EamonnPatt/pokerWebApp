@@ -1,7 +1,7 @@
 import { updateUserView } from "./utils.js";
+import { initProfile } from "./profile.js";
 
 export function initViewScripts(view: string) {
-    console.log("initViewScripts");
     if (view === 'login') {
         console.log("login view - views.ts ");
         const loginForm = document.getElementById("loginForm");
@@ -77,7 +77,12 @@ export function initViewScripts(view: string) {
             console.error("Register form not found");
         }
     }
-}
+    else if (view === 'Profile') {
+        console.log("profile view - views.ts ");
+        initProfile();
+        }
+    }
+
 
 async function handleLogin(username: string, password: string) {
     const response = await fetch('/api/login', {

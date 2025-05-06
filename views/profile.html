@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="../views\styles\profile.css">
+    <div id="profile"></div>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Profile</h1>
+        <div class="profile-info">
+            <div class="info-item">
+                <label>Username:</label>
+                <span id="username"></span>
+            </div>
+            <div class="info-item">
+                <label>Alias:</label>
+                <input type="text" id="alias" placeholder="Enter your alias" disabled>
+            </div>
+            <div class="info-item">
+                <label>Description:</label>
+                <textarea id="description" placeholder="Enter your description" disabled></textarea>
+            </div>
+            <button id="saveProfile" disabled>Save Changes</button>
+        </div>
+        <div id="error-message" class="error-message" style="display: none;"></div>
+    </div>
+
+    
+    <script type="module">
+        import { initProfile } from '../dist/scripts/profile.js';
+        console.log("Loading profile script...");
+        initProfile();
+    </script>
+</body>
+</html>

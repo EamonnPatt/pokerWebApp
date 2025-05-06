@@ -1,7 +1,6 @@
 export function updateUserView() {
     console.log("updateUserView called");
     const user = localStorage.getItem('user');
-    console.log("User in localStorage:", user);
     // Get the user display element from the navbar
     const userDisplay = document.querySelector('.navbar .user-display');
     const authLinks = document.querySelector('.auth-links');
@@ -23,13 +22,11 @@ export function updateUserView() {
             userDisplay.textContent = `Welcome, ${userObj.username}`;
             userDisplay.classList.add('show');
             // Hide login/register, show logout
-            console.log("Hiding auth links, showing logout");
             authLinks.style.display = 'none';
             logoutLink.style.display = 'block';
             // Force the logout button to be visible
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {
-                console.log("Found logout button, ensuring it's visible");
                 logoutBtn.style.display = 'block';
             }
         }
@@ -42,7 +39,6 @@ export function updateUserView() {
         }
     }
     else {
-        console.log("No user found, hiding logout and showing auth links");
         userDisplay.classList.remove('show');
         authLinks.style.display = 'block';
         logoutLink.style.display = 'none';
@@ -50,7 +46,6 @@ export function updateUserView() {
 }
 // Wait for DOM to be fully loaded before running updateUserView
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM Content Loaded in utils.ts");
     updateUserView();
 });
 const logoutBtn = document.getElementById('logoutBtn');
@@ -58,6 +53,8 @@ if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
         console.log("Logout button clicked");
         localStorage.removeItem('user');
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
         updateUserView();
     });
 }

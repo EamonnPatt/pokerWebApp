@@ -5,7 +5,7 @@ interface RouterState {
     view: string;
 }
 
-class Router {
+export class Router {
     private viewContainer: HTMLElement;
     private currentView: string | null;
 
@@ -49,7 +49,7 @@ class Router {
         });
     }
 
-    private async loadView(viewName: string): Promise<void> {
+    public async loadView(viewName: string): Promise<void> {
         try {
             console.log("Router loadView"); 
          

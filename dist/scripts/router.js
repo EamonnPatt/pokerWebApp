@@ -1,6 +1,6 @@
 import { updateUserView } from "./utils.js";
 import { initViewScripts } from "./views.js";
-class Router {
+export class Router {
     constructor() {
         const container = document.getElementById('view-container');
         if (!container) {

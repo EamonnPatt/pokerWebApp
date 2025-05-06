@@ -1,7 +1,8 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { User } from "./models/User.js"; //,js
+import { User } from "./models/User.js";
+//this file contains the api enpoints to connect to the database and the server including the middleware and server start command
 //DB
 import mongoose from "mongoose";
 const MONGO_URI = "mongodb+srv://admin:dbpass@pokercluster1.rgp8gh8.mongodb.net/";
@@ -67,6 +68,60 @@ app.post("/api/login", express.json(), async (req, res) => {
     catch (err) {
         console.error(err);
         res.status(500).send("Login failed");
+    }
+});
+// Profile routes
+app.get("/api/profile", async (req, res) => {
+    console.log("profile get endpoint");
+    try {
+        const { username } = req.query;
+        if (!username) {
+            throw new Error("Username Is Required");
+        }
+        const user = await User.findOne({ username });
+        if (!user) {
+            throw new Error("User Not Found");
+        }
+        const userData = user.toObject();
+        res.json({
+            username: userData.username,
+            alias: userData.alias || '',
+            description: userData.description || ''
+        });
+    }
+    catch (error) {
+        console.error("Error fetching profile:", error);
+        res.status(500).json({ error: "Failed to fetch profile" });
+    }
+});
+app.post("/api/profile", express.json(), async (req, res) => {
+    console.log("profile post endpoint");
+    try {
+        const { username, alias, description } = req.body;
+        if (!username) {
+            throw new Error("Username Is Required");
+        }
+        const user = await User.findOne({ username });
+        if (!user) {
+            throw new Error("User Not Found");
+        }
+        const updateData = {};
+        if (alias !== undefined)
+            updateData.alias = alias;
+        if (description !== undefined)
+            updateData.description = description;
+        await User.updateOne({ username }, { $set: updateData });
+        const updatedUser = await User.findOne({ username });
+        const userData = updatedUser?.toObject();
+        res.json({
+            username: userData.username,
+            alias: userData.alias || '',
+            description: userData.description || ''
+        });
+    }
+    catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).json({ error: "Failed to update profile" });
     }
 });
 ///end db routes
