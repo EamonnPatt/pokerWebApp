@@ -1,100 +1,91 @@
+import { error } from 'console';
 import { router } from './router.js';
 
-/**
- * DOM‑ID constants keep selectors in one place.
- */
+/* DOM constants */
 const PROFILE_ID = 'profile';
-const USERNAME_SPAN_ID = 'username';
-const ALIAS_INPUT_ID = 'alias';
-const DESCRIPTION_INPUT_ID = 'description';
-const SAVE_BUTTON_ID = 'saveProfile';
+const USERNAME_ID = 'username';
+const ALIAS_ID = 'alias';
+const DESCRIPTION_ID = 'description';
+const SAVE_ID = 'saveProfile';
 const ERROR_ID = 'error-message';
 
-/**
- * Entry point ‑ runs automatically when this module is imported directly.
- */
+/* public entry point */
 export function initProfile(): void {
-  // Only run on the profile page
   if (!document.getElementById(PROFILE_ID)) return;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeProfile);
-  } else {
-    initializeProfile();
-  }
+  document.readyState === 'loading'
+    ? document.addEventListener('DOMContentLoaded', initializeProfile)
+    : initializeProfile();
 }
 
-/**
- * Extract the username from localStorage as a plain string.
- */
+/* helper – grab username from localStorage */
 function getUsername(): string {
-  const stored = localStorage.getItem('user');
-  if (!stored) return '';
-
+  const raw = localStorage.getItem('user');
+  if (!raw) return '';
   try {
-    return JSON.parse(stored).username ?? '';
+    return JSON.parse(raw).username ?? '';
   } catch (err) {
-    console.error('Invalid JSON in localStorage "user":', err);
+    console.error('Bad JSON in localStorage “user”', err);
     return '';
   }
 }
 
-/**
- * Set up the profile page once the DOM is ready.
- */
+/* main */
 async function initializeProfile(): Promise<void> {
-  const usernameEl = document.getElementById(USERNAME_SPAN_ID) as HTMLSpanElement | null;
-  const aliasInput = document.getElementById(ALIAS_INPUT_ID) as HTMLInputElement | null;
-  const descInput = document.getElementById(DESCRIPTION_INPUT_ID) as HTMLTextAreaElement | null;
-  const saveBtn = document.getElementById(SAVE_BUTTON_ID) as HTMLButtonElement | null;
-  const errEl = document.getElementById(ERROR_ID) as HTMLElement | null;
+  const usernameSpan = document.getElementById(USERNAME_ID) as HTMLSpanElement | null;
+  const aliasField = document.getElementById(ALIAS_ID) as HTMLElement | null;
+  const descField = document.getElementById(DESCRIPTION_ID) as HTMLElement | null;
+  const saveBtn = document.getElementById(SAVE_ID) as HTMLButtonElement | null;
+  const errorEl = document.getElementById(ERROR_ID) as HTMLElement | null;
 
-  if (!usernameEl || !aliasInput || !descInput || !saveBtn) {
-    errEl && showError(errEl, 'Required DOM elements not found');
+  if (!usernameSpan || !aliasField || !descField || !saveBtn) {
+    errorEl && showError(errorEl, 'Required DOM elements not found');
     return;
   }
+
+  /* make alias & description editable */
+  aliasField.contentEditable = 'true';
+  descField.contentEditable = 'true';
 
   const username = getUsername();
   if (!username) {
     router.loadView('login');
     return;
   }
-
-  usernameEl.textContent = username;
-
+  usernameSpan.textContent = username;
+  /* load profile */
   try {
     const res = await fetch(`/api/profile?username=${encodeURIComponent(username)}`);
-    if (!res.ok) {
-      if (res.status !== 404) {
-        throw new Error((await res.json()).error ?? 'Failed to load profile');
-      }
-    } else {
+    console.log('after fetch', res)
+    if (!res.ok && res.status !== 404) {
+      throw new Error((await res.json()).error ?? 'Failed to load profile');
+    }
+    if (res.ok) {
       const data = await res.json();
       if (data && typeof data === 'object') {
-        aliasInput.value = data.alias ?? '';
-        descInput.value = data.description ?? '';
+        aliasField.textContent = data.alias ?? '';
+        descField.textContent = data.description ?? '';
+        console.log(data.alias)
+
       }
     }
   } catch (err) {
-    errEl && showError(errEl, err instanceof Error ? err.message : String(err));
-  } finally {
-    enableForm(aliasInput, descInput, saveBtn);
+    errorEl && showError(errorEl, err instanceof Error ? err.message : String(err));
   }
 
+  /* save handler */
+  saveBtn.disabled = false;
   saveBtn.addEventListener('click', () =>
-    handleSave(username, aliasInput, descInput, saveBtn, errEl)
+    handleSave(username, aliasField, descField, saveBtn, errorEl)
   );
 }
 
-/**
- * POST profile updates to the server.
- */
 async function handleSave(
   username: string,
-  aliasInput: HTMLInputElement,
-  descInput: HTMLTextAreaElement,
+  aliasField: HTMLElement,
+  descField: HTMLElement,
   saveBtn: HTMLButtonElement,
-  errEl: HTMLElement | null
+  errorEl: HTMLElement | null
 ): Promise<void> {
   try {
     saveBtn.disabled = true;
@@ -103,43 +94,30 @@ async function handleSave(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username,
-        alias: aliasInput.value,
-        description: descInput.value,
+        alias: aliasField.textContent ?? '',
+        description: descField.textContent ?? '',
       }),
     });
-
     if (!res.ok) throw new Error((await res.json()).error ?? 'Failed to save profile');
-
-    errEl && hideError(errEl);
+    errorEl && hideError(errorEl);
     alert('Profile updated successfully!');
   } catch (err) {
-    errEl && showError(errEl, err instanceof Error ? err.message : String(err));
+    errorEl && showError(errorEl, err instanceof Error ? err.message : String(err));
   } finally {
     saveBtn.disabled = false;
   }
 }
 
-/**
- * Utility helpers
- */
-function enableForm(
-  ...elements: (HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement)[]
-): void {
-  elements.forEach(el => (el.disabled = false));
-}
-
-function showError(el: HTMLElement, msg: string): void {
+/* error helpers */
+function showError(el: HTMLElement, msg: string) {
   el.textContent = msg;
   el.style.display = 'block';
 }
-
-function hideError(el: HTMLElement): void {
+function hideError(el: HTMLElement) {
   el.style.display = 'none';
 }
 
-/**
- * Auto‑initialise when the script is loaded directly.
- */
+/* auto‑run if loaded directly */
 if (import.meta.url === new URL(import.meta.url).href) {
   initProfile();
 }

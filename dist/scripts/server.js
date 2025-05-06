@@ -27,11 +27,6 @@ app.use("/dist", express.static(path.join(__dirname, "../dist")));
 // Serve views directory
 app.use("/views", express.static(path.join(__dirname, "../../views")));
 ///db routes
-app.get("/api/:username", async (req, res) => {
-    const { username } = req.params;
-    const user = await User.findOne({ username });
-    res.json(user);
-});
 app.post("/api/register", express.json(), async (req, res) => {
     console.log("serv reg");
     const { username, password } = req.body;
@@ -123,6 +118,11 @@ app.post("/api/profile", express.json(), async (req, res) => {
         console.error("Error updating profile:", error);
         res.status(500).json({ error: "Failed to update profile" });
     }
+});
+app.get("/api/:username", async (req, res) => {
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+    res.json(user);
 });
 ///end db routes
 // Start server

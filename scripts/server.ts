@@ -36,13 +36,7 @@ app.use("/dist", express.static(path.join(__dirname, "../dist")));
 // Serve views directory
 app.use("/views", express.static(path.join(__dirname, "../../views")));
 
-///db routes
-
-app.get("/api/:username", async (req: Request, res: Response) => {
-  const { username } = req.params;
-  const user = await User.findOne({ username });
-  res.json(user);
-});
+///db routes , the order in which they are written matters because its top down, sometimes an endpoint that kinda matches will steal the request
 
 app.post("/api/register", express.json(), async (req: Request, res: Response) => {
   console.log("serv reg")
@@ -156,6 +150,12 @@ app.post("/api/profile", express.json(), async (req: Request, res: Response) => 
         console.error("Error updating profile:", error);
         res.status(500).json({ error: "Failed to update profile" });
     }
+});
+
+app.get("/api/:username", async (req: Request, res: Response) => {
+  const { username } = req.params;
+  const user = await User.findOne({ username });
+  res.json(user);
 });
 ///end db routes
 

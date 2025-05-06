@@ -1,38 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Profile</title>
-    <link rel="stylesheet" href="../views\styles\profile.css">
-    <div id="profile"></div>
-</head>
-<body>
+
+    <!-- page‑specific styles -->
+    <link rel="stylesheet" href="/views/styles/profile.css" />
+  </head>
+
+  <body>
+    <!-- Marker so profile.ts knows it’s on the profile page -->
+    <div id="profile" hidden></div>
+
     <div class="profile-container">
-        <h1>Profile</h1>
-        <div class="profile-info">
-            <div class="info-item">
-                <label>Username:</label>
-                <span id="username"></span>
-            </div>
-            <div class="info-item">
-                <label>Alias:</label>
-                <input type="text" id="alias" placeholder="Enter your alias" disabled>
-            </div>
-            <div class="info-item">
-                <label>Description:</label>
-                <textarea id="description" placeholder="Enter your description" disabled></textarea>
-            </div>
-            <button id="saveProfile" disabled>Save Changes</button>
+      <h1>Profile</h1>
+
+      <div class="profile-info">
+        <!-- Username (read‑only) -->
+        <div class="info-item">
+          <label>Username:</label>
+          <span id="username"></span>
         </div>
-        <div id="error-message" class="error-message" style="display: none;"></div>
+
+        <!-- Alias (editable) -->
+        <div class="info-item">
+          <label>Alias:</label>
+          <span id="alias" class="editable-field"></span>
+        </div>
+
+        <!-- Description (editable) -->
+        <div class="info-item">
+          <label>Description:</label>
+          <div id="description" class="editable-field"></div>
+        </div>
+
+        <button id="saveProfile" disabled>Save Changes</button>
+      </div>
+
+      <div id="error-message" class="error-message" style="display:none;"></div>
     </div>
 
-    
+    <!-- profile logic -->
     <script type="module">
-        import { initProfile } from '../dist/scripts/profile.js';
-        console.log("Loading profile script...");
-        initProfile();
+      import { initProfile } from '/dist/scripts/profile.js';
+      initProfile();
     </script>
-</body>
+  </body>
 </html>
