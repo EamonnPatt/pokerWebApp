@@ -1,6 +1,6 @@
 import { updateUserView } from "./utils.js";
 import { initProfile } from "./profile.js";
-export function initViewScripts(view) {
+export async function initViewScripts(view) {
     if (view === 'login') {
         console.log("login view - views.ts ");
         const loginForm = document.getElementById("loginForm");
@@ -73,6 +73,9 @@ export function initViewScripts(view) {
     else if (view === 'Profile') {
         console.log("profile view - views.ts ");
         initProfile();
+    }
+    else if (view === 'activeGame') {
+        console.log("activeGame view - views.ts ");
     }
 }
 async function handleLogin(username, password) {

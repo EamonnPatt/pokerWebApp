@@ -7,5 +7,3 @@ const __dirname = path.dirname(__filename);
 
 console.log("app.ts loaded");
 
-
-

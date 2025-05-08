@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Texas Hold'em Demo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.4/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-emerald-900 text-white p-6">
+    <h1 class="text-center text-3xl mb-6 font-bold">Hold'em Poker</h1>
+
+    <!-- Table -->
+    <div id="table" class="flex flex-col items-center gap-4"></div>
+
+    <!-- Action buttons -->
+    <div id="controls" class="mt-8 flex justify-center gap-4">
+      <button data-move="bet"   class="action hidden px-4 py-2 bg-amber-500 rounded">Bet</button>
+      <button data-move="check" class="action hidden px-4 py-2 bg-amber-500 rounded">Check</button>
+      <button data-move="raise" class="action hidden px-4 py-2 bg-amber-500 rounded">Raise</button>
+      <button data-move="call"  class="action hidden px-4 py-2 bg-amber-500 rounded">Call</button>
+      <button data-move="fold"  class="action hidden px-4 py-2 bg-rose-600  rounded">Fold</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="../dist/scripts/game/client.js"></script>
+  </body>
+</html>
